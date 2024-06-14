@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -20,13 +21,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.yeshua.projeto.model.Empresa;
+import br.com.yeshua.projeto.model.Representante;
 import br.com.yeshua.projeto.repositoriy.EmpresaRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -112,9 +116,30 @@ public class EmpresaController {
             () -> new IllegalArgumentException("empresa não encontrada")
         );
 
-        repository.deleteById(id);
+        verificarSeExisteEmpresa(id);
 
+        repository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    
+    @PutMapping("{id}")
+    @CacheEvict(allEntries = true)
+    public Empresa update(@PathVariable Long id, @RequestBody Empresa empresa) {
+        log.info("atualizando empresa id {} para {}", id, empresa);
+
+        verificarSeExisteEmpresa(id);
+
+        empresa.setId(id);
+        return repository.save(empresa);
+
+    }
+
+        private void verificarSeExisteEmpresa(Long id) {
+        repository
+                .findById(id)
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empresa não encontrada"));
     }
     
 }
