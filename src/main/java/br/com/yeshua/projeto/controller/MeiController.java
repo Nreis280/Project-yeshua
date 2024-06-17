@@ -1,8 +1,6 @@
 package br.com.yeshua.projeto.controller;
 
-
 import static org.springframework.http.HttpStatus.CREATED;
-
 import java.math.BigDecimal;
 
 import org.springdoc.core.annotations.ParameterObject;
@@ -30,26 +28,24 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.yeshua.projeto.model.Empresa;
-import br.com.yeshua.projeto.model.Representante;
-import br.com.yeshua.projeto.repositoriy.EmpresaRepository;
+import br.com.yeshua.projeto.model.Mei;
+import br.com.yeshua.projeto.repositoriy.MeiRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("empresa")
+@RequestMapping("mei")
 @Slf4j
-public class EmpresaController {
-
-    record TotalPorRepresentante (String representante, BigDecimal cdEmpresa){} 
+public class MeiController {
 
     @Autowired
-    EmpresaRepository repository;
+    MeiRepository repository;
 
     @Autowired
-    PagedResourcesAssembler<Empresa> pageAssembler;
+    PagedResourcesAssembler<Mei> pageAssembler;
 
     @GetMapping
-    public PagedModel<EntityModel<Empresa>> index(
+    public PagedModel<EntityModel<Mei>> index(
         @RequestParam(required = false) String representante,
         @RequestParam(required = false) String status,
         @RequestParam(required = false) String declaracoes,
@@ -60,7 +56,7 @@ public class EmpresaController {
         @ParameterObject @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable
     ) {
 
-        Page<Empresa> page = null;
+        Page<Mei> page = null;
 
         if (status != null){
             page = repository.findByStatus(status, pageable);
@@ -92,37 +88,38 @@ public class EmpresaController {
             page = repository.findAll(pageable);
         }
 
-        return pageAssembler.toModel(page, Empresa::toEntityModel);
+        return pageAssembler.toModel(page, Mei::toEntityModel);
 
     }
+    
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public ResponseEntity<Empresa> create(@RequestBody @Valid Empresa empresa){
-        repository.save(empresa);
+    public ResponseEntity<Mei> create(@RequestBody @Valid Mei mei){
+        repository.save(mei);
 
         return ResponseEntity.created(
-                    empresa.toEntityModel().getLink("self").get().toUri()
-                ).body(empresa);
+                    mei.toEntityModel().getLink("self").get().toUri()
+                ).body(mei);
     }
 
     @GetMapping("{id}")
-    public EntityModel<Empresa> get(@PathVariable Long id){
-        var empresa = repository.findById(id).orElseThrow(
-            () -> new IllegalArgumentException("empresa não encontrada")
+    public EntityModel<Mei> get(@PathVariable Long id){
+        var mei = repository.findById(id).orElseThrow(
+            () -> new IllegalArgumentException("Mei não encontrado")
         );
 
-        return empresa.toEntityModel();
+        return mei.toEntityModel();
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public ResponseEntity<Object> destroy(@PathVariable Long id){
         repository.findById(id).orElseThrow(
-            () -> new IllegalArgumentException("empresa não encontrada")
+            () -> new IllegalArgumentException("MEI não encontrado")
         );
 
-        verificarSeExisteEmpresa(id);
+        verificarSeExisteMei(id);
 
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
@@ -131,21 +128,22 @@ public class EmpresaController {
     
     @PutMapping("{id}")
     @CacheEvict(allEntries = true)
-    public Empresa update(@PathVariable Long id, @RequestBody Empresa empresa) {
-        log.info("atualizando empresa id {} para {}", id, empresa);
+    public Mei update(@PathVariable Long id, @RequestBody Mei mei) {
+        log.info("atualizando mei id {} para {}", id, mei);
 
-        verificarSeExisteEmpresa(id);
+        verificarSeExisteMei(id);
 
-        empresa.setId(id);
-        return repository.save(empresa);
+        mei.setId(id);
+        return repository.save(mei);
 
     }
 
-        private void verificarSeExisteEmpresa(Long id) {
+        private void verificarSeExisteMei(Long id) {
         repository
                 .findById(id)
                 .orElseThrow(
-                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empresa não encontrada"));
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "MEI não encontrado"));
     }
     
 }
+
