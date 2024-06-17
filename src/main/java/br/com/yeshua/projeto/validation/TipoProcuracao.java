@@ -10,11 +10,11 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 @Target(FIELD)
-@Constraint(validatedBy = TipoSimplesNacionalValidator.class)
+@Constraint(validatedBy = TipoProcuracaoValidator.class)
 @Retention(RUNTIME)
-public @interface TipoSimplesNacional {
+public @interface TipoProcuracao {
 
-    String message() default "Tipo inválido. Tipo do Simples Nacional deve ser OPTANTE ou NÃO OPTANTE.";
+    String message() default "Tipo inválido. Tipo de procuracao deve ser Não tem, Anderson, Anderson CPF Socios, Yeshua Contabilidade ou Yeshua Empresarial.";
 
     Class<?>[] groups() default { };
 

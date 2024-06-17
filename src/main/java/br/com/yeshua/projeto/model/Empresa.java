@@ -9,8 +9,10 @@ import java.math.BigDecimal;
 import org.springframework.hateoas.EntityModel;
 
 import br.com.yeshua.projeto.controller.EmpresaController;
+import br.com.yeshua.projeto.validation.TipoContabilista;
 import br.com.yeshua.projeto.validation.TipoDeclaracoes;
 import br.com.yeshua.projeto.validation.TipoPorte;
+import br.com.yeshua.projeto.validation.TipoProcuracao;
 import br.com.yeshua.projeto.validation.TipoStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -79,6 +81,16 @@ public class Empresa extends EntityModel<Empresa>{
 
     @Size(max = 100)
     private String senhaPostoFiscal;
+
+    private String ie;
+
+    @NotBlank
+    @TipoProcuracao(message = "{empresa.procuracao.tipoprocuracao}")
+    private String procuracao;
+
+    @NotBlank
+    @TipoContabilista(message = "{empresa.contabilista.tipocontabilista}")
+    private String contabilista;
 
     @Size(max = 20)
     private String ccm;

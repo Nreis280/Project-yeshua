@@ -8,7 +8,9 @@ import java.math.BigDecimal;
 import org.springframework.hateoas.EntityModel;
 
 import br.com.yeshua.projeto.controller.MeiController;
+import br.com.yeshua.projeto.validation.TipoContabilista;
 import br.com.yeshua.projeto.validation.TipoDeclaracoes;
+import br.com.yeshua.projeto.validation.TipoProcuracao;
 import br.com.yeshua.projeto.validation.TipoStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,7 +53,7 @@ public class Mei {
     private String apelido;
 
     @NotBlank
-    @TipoStatus(message = "{empresa.tipo.tipostatus}")
+    @TipoStatus(message = "{mei.tipo.tipostatus}")
     private String status;
 
     @NotBlank
@@ -67,7 +69,7 @@ public class Mei {
     private String simplesNacional;
 
     @NotBlank
-    @TipoDeclaracoes(message = "{empresa.tipo.tipodeclaracoes}")
+    @TipoDeclaracoes(message = "{mei.tipo.tipodeclaracoes}")
     private String declaracoes;
 
     private String ie;
@@ -90,16 +92,13 @@ public class Mei {
     @Size(max = 100)
     private String senhaNFE;
 
-    /* 
-    
-    private String contabilista
-    private String rfbContabilidade;
+    @NotBlank
+    @TipoProcuracao(message = "{mei.procuracao.tipoprocuracao}")
+    private String procuracao;
 
-    private String rfbEmpresarial;
-
-    private String rfbAnderson; 
-    private String rfbAndersonSocios; */
-
+    @NotBlank
+    @TipoContabilista(message = "{mei.contabilista.tipocontabilista}")
+    private String contabilista;
 
     private String licenciamento;
 
