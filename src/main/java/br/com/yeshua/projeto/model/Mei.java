@@ -5,11 +5,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.math.BigDecimal;
 
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.hateoas.EntityModel;
 
 import br.com.yeshua.projeto.controller.MeiController;
 import br.com.yeshua.projeto.validation.TipoContabilista;
 import br.com.yeshua.projeto.validation.TipoDeclaracoes;
+import br.com.yeshua.projeto.validation.TipoLicenciamento;
 import br.com.yeshua.projeto.validation.TipoProcuracao;
 import br.com.yeshua.projeto.validation.TipoStatus;
 import jakarta.persistence.Entity;
@@ -18,6 +20,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -29,7 +32,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@Table(name = "mei")
+@Table(name = "mei",uniqueConstraints = {@UniqueConstraint(columnNames = {"razaoSocial","cnpj", "cdEmpresa","apelido"})})
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -100,6 +103,8 @@ public class Mei {
     @TipoContabilista(message = "{mei.contabilista.tipocontabilista}")
     private String contabilista;
 
+    @NotBlank
+    @TipoLicenciamento(message = "{mei.licenciamento.tipolicenciamento}")
     private String licenciamento;
 
     private String govBr;

@@ -11,6 +11,7 @@ import org.springframework.hateoas.EntityModel;
 import br.com.yeshua.projeto.controller.EmpresaController;
 import br.com.yeshua.projeto.validation.TipoContabilista;
 import br.com.yeshua.projeto.validation.TipoDeclaracoes;
+import br.com.yeshua.projeto.validation.TipoLicenciamento;
 import br.com.yeshua.projeto.validation.TipoPorte;
 import br.com.yeshua.projeto.validation.TipoProcuracao;
 import br.com.yeshua.projeto.validation.TipoStatus;
@@ -20,6 +21,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -30,7 +32,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@Table(name = "empresas")
+@Table(name = "empresas",uniqueConstraints = {@UniqueConstraint(columnNames = {"razaoSocial","cnpj", "cdEmpresa","apelido"})})
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -103,6 +105,12 @@ public class Empresa extends EntityModel<Empresa>{
 
     @Size(max = 100)
     private String senhaNFE;
+
+    @NotBlank
+    @TipoLicenciamento(message = "{empresa.licenciamento.tipolicenciamento}")
+    private String licenciamento;
+
+    private String govBr;
 
     @ManyToOne
     private Representante representante;
