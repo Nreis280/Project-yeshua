@@ -4,6 +4,8 @@ package br.com.yeshua.projeto.model;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.math.BigDecimal;
+
 import org.springframework.hateoas.EntityModel;
 
 import br.com.yeshua.projeto.controller.EmpresaController;
@@ -43,6 +45,8 @@ public class Empresa extends EntityModel<Empresa>{
 
     @NotBlank
     private String cnpj;
+
+    private BigDecimal cdEmpresa;
 
     @NotBlank
     @Size(max = 100)
@@ -97,7 +101,7 @@ public class Empresa extends EntityModel<Empresa>{
             this,
             linkTo(methodOn(EmpresaController.class).get(id)).withSelfRel(),
             linkTo(methodOn(EmpresaController.class).destroy(id)).withRel("delete"),
-            linkTo(methodOn(EmpresaController.class).index("", "", "", "", "", "", null)).withRel("contents")
+            linkTo(methodOn(EmpresaController.class).index("", "", "", "", "", cdEmpresa, "", null)).withRel("contents")
         );
         return model;
     }

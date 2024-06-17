@@ -55,6 +55,7 @@ public class EmpresaController {
         @RequestParam(required = false) String declaracoes,
         @RequestParam(required = false) String simplesNacional,
         @RequestParam(required = false) String apelido,
+        @RequestParam(required = false) BigDecimal cdEmpresa,
         @RequestParam(required = false) String razaoSocial,
         @ParameterObject @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable
     ) {
@@ -74,6 +75,11 @@ public class EmpresaController {
         if (apelido != null){
             page = repository.findByApelido(apelido, pageable);
         }
+
+        if (cdEmpresa != null){
+            page = repository.findByCdEmpresa(cdEmpresa, pageable);
+        }
+
         if (razaoSocial != null){
             page = repository.findByRazaoSocial(razaoSocial, pageable);
         }
