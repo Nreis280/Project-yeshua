@@ -40,14 +40,16 @@ public class AuthorizationService implements UserDetailsService{
         return userRepository.findByEmail(email);
     } 
 
-    public ResponseEntity<Object> login(@RequestBody @Valid AuthetinticationDto data){
+    public ResponseEntity<Object> login(@RequestBody @Valid AuthetinticationDto data) {
         authenticationManager = context.getBean(AuthenticationManager.class);
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((User) auth.getPrincipal());
-        return ResponseEntity.ok(new LoginResponseDto(token, data.email()));
+        var user = (User) auth.getPrincipal();
+        var token = tokenService.generateToken(user);
+        return ResponseEntity.ok(new LoginResponseDto(token, user.getEmail(), user.getUserRole()));
     }
+
 
 
     public ResponseEntity<Object> register (@RequestBody RegisterDto registerDto){
