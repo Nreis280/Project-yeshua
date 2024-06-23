@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 @SpringBootApplication
 public class ProjetoApplication {
-
 	@GetMapping
 	public ResponseEntity<String> status(){
 		return ResponseEntity.ok("Working!");
@@ -20,5 +19,4 @@ public class ProjetoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProjetoApplication.class, args);
 	}
-
 }

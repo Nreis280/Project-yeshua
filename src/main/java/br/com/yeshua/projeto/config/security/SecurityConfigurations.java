@@ -21,34 +21,34 @@ public class SecurityConfigurations {
     @Autowired
     SecurityFilter securityFilter;
 
-    @Bean 
-    public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception{
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/representante").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/empresa").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.PUT, "/representante").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.PUT, "/empresa").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/empresa").hasRole("USER")
-                    .requestMatchers(HttpMethod.GET, "/representante").hasRole("USER")
-                    .anyRequest().permitAll()
-                )
-        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-        .build();
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.GET, "/auth/user").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/representante").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/empresa").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/representante").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/empresa").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/empresa").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/representante").hasRole("USER")
+                        .anyRequest().permitAll())
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
-
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean 
-    public PasswordEncoder passwordEncoder(){
+    @Bean
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

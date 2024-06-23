@@ -6,6 +6,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.math.BigDecimal;
 
+import org.hibernate.validator.constraints.br.CNPJ;
 import org.springframework.hateoas.EntityModel;
 
 import br.com.yeshua.projeto.controller.EmpresaController;
@@ -47,6 +48,7 @@ public class Empresa extends EntityModel<Empresa>{
     @Size(max = 255)
     private String razaoSocial;
 
+    // @CNPJ
     @NotBlank
     private String cnpj;
 
