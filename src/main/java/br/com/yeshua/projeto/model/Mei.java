@@ -13,6 +13,7 @@ import br.com.yeshua.projeto.validation.TipoContabilista;
 import br.com.yeshua.projeto.validation.TipoDeclaracoes;
 import br.com.yeshua.projeto.validation.TipoLicenciamento;
 import br.com.yeshua.projeto.validation.TipoProcuracao;
+import br.com.yeshua.projeto.validation.TipoSimplesNacional;
 import br.com.yeshua.projeto.validation.TipoStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -63,12 +64,13 @@ public class Mei {
     @Size(max = 100)
     private String cidade;
 
-    private String porte = "MEI";
+    private String porte;
 
     @Size(max = 100)
     private String cdAcessoSN;
 
-    @Size(max = 10)
+    @Size(max = 11)
+    @TipoSimplesNacional(message = "{mei.tipo.tiposimplesnacional}")
     private String simplesNacional;
 
     @NotBlank

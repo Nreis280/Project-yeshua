@@ -15,6 +15,7 @@ import br.com.yeshua.projeto.validation.TipoDeclaracoes;
 import br.com.yeshua.projeto.validation.TipoLicenciamento;
 import br.com.yeshua.projeto.validation.TipoPorte;
 import br.com.yeshua.projeto.validation.TipoProcuracao;
+import br.com.yeshua.projeto.validation.TipoSimplesNacional;
 import br.com.yeshua.projeto.validation.TipoStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -73,7 +74,8 @@ public class Empresa extends EntityModel<Empresa>{
     @Size(max = 100)
     private String cdAcessoSN;
 
-    @Size(max = 10)
+    @Size(max = 11)
+    @TipoSimplesNacional(message = "{empresa.tipo.tiposimplesnacional}")
     private String simplesNacional;
 
     @NotBlank
