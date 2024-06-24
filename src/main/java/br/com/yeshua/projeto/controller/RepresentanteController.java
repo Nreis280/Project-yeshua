@@ -56,17 +56,11 @@ public class RepresentanteController {
     PagedResourcesAssembler<Representante> pageAssembler;
 
 
-    @GetMapping("cpf")
-    public PagedModel<EntityModel<Representante>> index(
-        @RequestParam(required = false) String cpf,
-        @ParameterObject @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable
-    ) {
-        Page<Representante> page = null;
+    @GetMapping("cpf/{cpf}")
+    public ResponseEntity<Representante> index(@PathVariable String cpf) {
+        Representante representante = representanteRepository.findByCpf(cpf);
 
-        if (cpf != null) {
-            page = representanteRepository.findByCpf(cpf, pageable);
-        }
-        return pageAssembler.toModel(page, Representante::toEntityModel);
+        return representante != null? ResponseEntity.ok(representante) : ResponseEntity.notFound().build();
     }
 
     @GetMapping

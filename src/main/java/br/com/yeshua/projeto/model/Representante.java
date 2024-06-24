@@ -47,7 +47,7 @@ public class Representante {
         this,
         linkTo(methodOn(RepresentanteController.class).get(id)).withSelfRel(),
         linkTo(methodOn(RepresentanteController.class).destroy(id)).withRel("delete"),
-        linkTo(methodOn(RepresentanteController.class).index("",null)).withRel("contents")
+        linkTo(methodOn(RepresentanteController.class).index("")).withRel("contents")
     );
     return model;
     }

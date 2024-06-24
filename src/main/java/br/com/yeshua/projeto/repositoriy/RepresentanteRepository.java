@@ -10,6 +10,6 @@ import br.com.yeshua.projeto.model.Representante;
 
 public interface RepresentanteRepository extends JpaRepository<Representante, Long> {
 
-    Page<Representante> findByCpf (String cpf, Pageable pageable);
+    Representante findByCpf (String cpf);
 
 }
