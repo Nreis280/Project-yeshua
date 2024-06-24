@@ -56,7 +56,7 @@ public class RepresentanteController {
     PagedResourcesAssembler<Representante> pageAssembler;
 
 
-    @GetMapping
+    @GetMapping("cpf")
     public PagedModel<EntityModel<Representante>> index(
         @RequestParam(required = false) String cpf,
         @ParameterObject @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable
@@ -68,7 +68,7 @@ public class RepresentanteController {
         }
         return pageAssembler.toModel(page, Representante::toEntityModel);
     }
-    
+
     @GetMapping
     @Cacheable
     @Operation(summary = "Lista todas as representantes cadastradas no sistema.", description = "Endpoint que retorna um array de objetos do tipo representante com todas as representantes do usuário atual")

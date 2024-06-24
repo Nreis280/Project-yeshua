@@ -24,15 +24,11 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
     @Query("SELECT e FROM Empresa e WHERE(e.simplesNacional) = :simplesNacional")
     Page<Empresa> findBySimplesNacional(@Param("simplesNacional") String simplesNacional, Pageable pageable);
 
-    @Query("SELECT e FROM Empresa e WHERE(e.apelido) = :apelido")
-    Page<Empresa> findByApelido(@Param("apelido") String apelido, Pageable pageable);
+    Page<Empresa> findByApelidoContainingIgnoreCase (String apelido, Pageable pageable);
 
-    @Query("SELECT e FROM Empresa e WHERE(e.cdEmpresa) = :cdEmpresa")
-    Page<Empresa> findByCdEmpresa(@Param("cdEmpresa") BigDecimal cdEmpresa, Pageable pageable);
+    @Query("SELECT e FROM Empresa e WHERE str(e.cdEmpresa) LIKE %:cdEmpresa%")
+    Page<Empresa> findByCdEmpresaContaining(@Param("cdEmpresa") String cdEmpresa, Pageable pageable);
 
-    @Query("SELECT e FROM Empresa e WHERE(e.razaoSocial) = :razaoSocial")
-    Page<Empresa> findByRazaoSocial(@Param("razaoSocial") String razaoSocial, Pageable pageable);
+    Page<Empresa> findByRazaoSocialContainingIgnoreCase(String razaoSocial, Pageable pageable);
 
-/*     Empresa findAllByOrderByNome();
- */
 }

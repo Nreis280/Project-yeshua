@@ -69,15 +69,15 @@ public class MeiController {
             page = repository.findBySimplesNacional(simplesNacional, pageable);
         }
         if (apelido != null){
-            page = repository.findByApelido(apelido, pageable);
+            page = repository.findByApelidoContainingIgnoreCase(apelido, pageable);
         }
 
         if (cdEmpresa != null){
-            page = repository.findByCdEmpresa(cdEmpresa, pageable);
+            page = repository.findByCdEmpresaContainingIgnoreCase(cdEmpresa, pageable);
         }
 
         if (razaoSocial != null){
-            page = repository.findByRazaoSocial(razaoSocial, pageable);
+            page = repository.findByRazaoSocialContainingIgnoreCase(razaoSocial, pageable);
         }
 
         if (representante != null){

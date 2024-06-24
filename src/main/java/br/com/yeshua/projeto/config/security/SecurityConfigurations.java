@@ -27,10 +27,10 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/auth/user").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/representante").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/representante/cpf").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/empresa").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/representante").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/empresa").hasRole("ADMIN")

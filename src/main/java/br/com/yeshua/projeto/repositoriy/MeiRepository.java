@@ -23,12 +23,9 @@ public interface MeiRepository extends JpaRepository<Mei, Long> {
     @Query("SELECT m FROM Mei m WHERE(m.simplesNacional) = :simplesNacional")
     Page<Mei> findBySimplesNacional(@Param("simplesNacional") String simplesNacional, Pageable pageable);
 
-    @Query("SELECT m FROM Mei m WHERE(m.apelido) = :apelido")
-    Page<Mei> findByApelido(@Param("apelido") String apelido, Pageable pageable);
+    Page<Mei> findByApelidoContainingIgnoreCase (String apelido, Pageable pageable);
 
-    @Query("SELECT m FROM Mei m WHERE(m.cdEmpresa) = :cdEmpresa")
-    Page<Mei> findByCdEmpresa(@Param("cdEmpresa") BigDecimal cdEmpresa, Pageable pageable);
+    Page<Mei> findByCdEmpresaContainingIgnoreCase(BigDecimal cdEmpresa, Pageable pageable);
 
-    @Query("SELECT m FROM Mei m WHERE(m.razaoSocial) = :razaoSocial")
-    Page<Mei> findByRazaoSocial(@Param("razaoSocial") String razaoSocial, Pageable pageable);
+    Page<Mei> findByRazaoSocialContainingIgnoreCase(String razaoSocial, Pageable pageable);
 }
