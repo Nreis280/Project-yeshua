@@ -68,7 +68,6 @@ public class RepresentanteController {
                 .findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-
     }
 
     @DeleteMapping("{id}")
