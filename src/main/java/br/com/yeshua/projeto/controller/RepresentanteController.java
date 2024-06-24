@@ -3,12 +3,21 @@ package br.com.yeshua.projeto.controller;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,10 +27,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.com.yeshua.projeto.model.Empresa;
 import br.com.yeshua.projeto.model.Representante;
 import br.com.yeshua.projeto.repositoriy.RepresentanteRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,6 +52,23 @@ public class RepresentanteController {
     @Autowired
     RepresentanteRepository representanteRepository;
 
+    @Autowired
+    PagedResourcesAssembler<Representante> pageAssembler;
+
+
+    @GetMapping
+    public PagedModel<EntityModel<Representante>> index(
+        @RequestParam(required = false) String cpf,
+        @ParameterObject @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable
+    ) {
+        Page<Representante> page = null;
+
+        if (cpf != null) {
+            page = representanteRepository.findByCpf(cpf, pageable);
+        }
+        return pageAssembler.toModel(page, Representante::toEntityModel);
+    }
+    
     @GetMapping
     @Cacheable
     @Operation(summary = "Lista todas as representantes cadastradas no sistema.", description = "Endpoint que retorna um array de objetos do tipo representante com todas as representantes do usuário atual")
@@ -59,6 +87,7 @@ public class RepresentanteController {
         log.info("cadastrando representante: {}", representante);
         return representanteRepository.save(representante);
     }
+    
 
     @GetMapping("{id}")
     public ResponseEntity<Representante> get(@PathVariable Long id) {
@@ -71,13 +100,16 @@ public class RepresentanteController {
     }
 
     @DeleteMapping("{id}")
-    @ResponseStatus(NO_CONTENT)
-    @CacheEvict(allEntries = true)
-    public void destroy(@PathVariable Long id) {
-        log.info("apagando representante {}", id);
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public ResponseEntity<Object> destroy(@PathVariable Long id){
+        representanteRepository.findById(id).orElseThrow(
+            () -> new IllegalArgumentException("MEI não encontrado")
+        );
 
         verificarSeExisteRepresentante(id);
+
         representanteRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}")
