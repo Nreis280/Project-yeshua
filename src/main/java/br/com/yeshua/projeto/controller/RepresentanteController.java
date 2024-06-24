@@ -72,8 +72,12 @@ public class RepresentanteController {
     @GetMapping
     @Cacheable
     @Operation(summary = "Lista todas as representantes cadastradas no sistema.", description = "Endpoint que retorna um array de objetos do tipo representante com todas as representantes do usuário atual")
-    public List<Representante> index() {
-        return representanteRepository.findAll();
+    public PagedModel<EntityModel<Representante>> index(Pageable pageable) {
+        Page<Representante> page = null;
+
+        page = representanteRepository.findAll(pageable);
+
+        return pageAssembler.toModel(page, Representante::toEntityModel);
     }
 
     @PostMapping
