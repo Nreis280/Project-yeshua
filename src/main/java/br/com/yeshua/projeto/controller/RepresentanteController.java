@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.springdoc.core.annotations.ParameterObject;
@@ -20,6 +21,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.yeshua.projeto.model.Empresa;
+import br.com.yeshua.projeto.model.Historico;
+import br.com.yeshua.projeto.model.Mei;
 import br.com.yeshua.projeto.model.Representante;
+import br.com.yeshua.projeto.model.User;
+import br.com.yeshua.projeto.repositoriy.HistoricoRepository;
 import br.com.yeshua.projeto.repositoriy.RepresentanteRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -51,6 +57,10 @@ public class RepresentanteController {
 
     @Autowired
     RepresentanteRepository representanteRepository;
+
+    @Autowired
+    HistoricoRepository historicoRepository;
+
 
     @Autowired
     PagedResourcesAssembler<Representante> pageAssembler;
@@ -76,14 +86,11 @@ public class RepresentanteController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    @CacheEvict(allEntries = true)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "400", description = "Erro de validação da representante"),
-            @ApiResponse(responseCode = "201", description = "representante cadastrada com sucesso")
-    })
-    public Representante create(@RequestBody @Valid Representante representante) {
-        log.info("cadastrando representante: {}", representante);
-        return representanteRepository.save(representante);
+    public ResponseEntity<Representante> create(@RequestBody @Valid Representante representante) {
+        Representante savedRepresentante = representanteRepository.save(representante);
+        registrarHistorico(savedRepresentante, "Criou", null, savedRepresentante.getNome());
+        return ResponseEntity.created(
+                representante.toEntityModel().getLink("self").get().toUri()).body(savedRepresentante);
     }
     
 
@@ -99,36 +106,101 @@ public class RepresentanteController {
 
     @DeleteMapping("{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public ResponseEntity<Object> destroy(@PathVariable Long id){
-        representanteRepository.findById(id).orElseThrow(
-            () -> new IllegalArgumentException("MEI não encontrado")
-        );
-
-        verificarSeExisteRepresentante(id);
-
+    public ResponseEntity<Object> destroy(@PathVariable Long id) {
+        Representante representante = representanteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("representante não encontrado"));
         representanteRepository.deleteById(id);
+        registrarHistorico(representante, "Apagou", representante, null);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}")
     @CacheEvict(allEntries = true)
-    public Representante update(@PathVariable Long id, @RequestBody Representante representante) {
-        log.info("atualizando representante id {} para {}", id, representante);
+    public Representante update(@PathVariable Long id, @RequestBody Representante representanteAtualizada) {
+        Representante representanteExistente = representanteRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mei não encontrado"));
 
-        verificarSeExisteRepresentante(id);
+        registrarAlteracoes(representanteExistente, representanteAtualizada);
 
-        representante.setId(id);
-        return representanteRepository.save(representante);
+        representanteAtualizada.setId(id);
+        Representante representanteAtualizadaSalva = representanteRepository.save(representanteAtualizada);
 
+        return representanteAtualizadaSalva;
     }
 
-    private void verificarSeExisteRepresentante(Long id) {
-        representanteRepository
-                .findById(id)
-                .orElseThrow(
-                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Representante não encontrado"));
+    private void registrarHistorico(Representante representante, String acao, Representante valorAntigo, String string) {
+        User usuario = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Historico historico = Historico.builder()
+                .user(usuario)
+                .data(new Date())
+                .acao(acao)
+                .entidade("Representante")
+                .entidadeId(representante.getId())
+                .campoAlterado(acao)
+                .valorAntigo(valorAntigo != null ? valorAntigo.toString() : null)
+                .valorNovo(string != null ? string.toString() : null)
+                .build();
+
+        historicoRepository.save(historico);
     }
 
+    private void registrarAlteracoes(Representante existente, Representante atualizada) {
+        User usuario = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    
+        if (!existente.getNome().equals(atualizada.getNome())) {
+            historicoRepository.save(Historico.builder()
+                .user(usuario)
+                .data(new Date())
+                .acao("Atualizou")
+                .entidade("Representante")
+                .entidadeId(existente.getId())
+                .campoAlterado("nome")
+                .valorAntigo(existente.getNome())
+                .valorNovo(atualizada.getNome())
+                .build());
+        }
+
+        if (!existente.getCpf().equals(atualizada.getCpf())) {
+            historicoRepository.save(Historico.builder()
+                .user(usuario)
+                .data(new Date())
+                .acao("Atualizou")
+                .entidade("Representante")
+                .entidadeId(existente.getId())
+                .campoAlterado("cpf")
+                .valorAntigo(existente.getCpf())
+                .valorNovo(atualizada.getCpf())
+                .build());
+        }
+
+        if (!existente.getEmail().equals(atualizada.getEmail())) {
+            historicoRepository.save(Historico.builder()
+                .user(usuario)
+                .data(new Date())
+                .acao("Atualizou")
+                .entidade("Representante")
+                .entidadeId(existente.getId())
+                .campoAlterado("email")
+                .valorAntigo(existente.getEmail())
+                .valorNovo(atualizada.getEmail())
+                .build());
+        }
+
+        if (!existente.getTelefone().equals(atualizada.getTelefone())) {
+            historicoRepository.save(Historico.builder()
+                .user(usuario)
+                .data(new Date())
+                .acao("Atualizou")
+                .entidade("Representante")
+                .entidadeId(existente.getId())
+                .campoAlterado("telefone")
+                .valorAntigo(existente.getTelefone())
+                .valorNovo(atualizada.getTelefone())
+                .build());
+        }
+
+    }
 }
 
 

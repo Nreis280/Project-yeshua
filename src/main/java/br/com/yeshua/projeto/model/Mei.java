@@ -5,7 +5,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.math.BigDecimal;
 
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.hateoas.EntityModel;
 
 import br.com.yeshua.projeto.controller.MeiController;
@@ -50,7 +49,7 @@ public class Mei {
     @NotBlank
     private String cnpj;
 
-    private BigDecimal cdEmpresa;
+    private Long cdEmpresa;
 
     @NotBlank
     @Size(max = 100)

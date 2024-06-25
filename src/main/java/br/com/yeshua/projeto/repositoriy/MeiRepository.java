@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+
 import br.com.yeshua.projeto.model.Mei;
 
 public interface MeiRepository extends JpaRepository<Mei, Long> {
@@ -25,7 +26,8 @@ public interface MeiRepository extends JpaRepository<Mei, Long> {
 
     Page<Mei> findByApelidoContainingIgnoreCase (String apelido, Pageable pageable);
 
-    Page<Mei> findByCdEmpresaContainingIgnoreCase(BigDecimal cdEmpresa, Pageable pageable);
+    @Query("SELECT m FROM Mei m WHERE str(m.cdEmpresa) LIKE %:cdEmpresa%")
+    Page<Mei> findByCdEmpresaContaining(@Param("cdEmpresa") String cdEmpresa, Pageable pageable);
 
     Page<Mei> findByRazaoSocialContainingIgnoreCase(String razaoSocial, Pageable pageable);
 }
