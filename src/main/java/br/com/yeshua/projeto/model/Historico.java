@@ -44,6 +44,10 @@ public class Historico {
     @Column(nullable = false)
     private Long entidadeId;
 
+    
+    @Column(nullable = false)
+    private String alteradoEm;
+
     @Column(nullable = false)
     private String campoAlterado;
 

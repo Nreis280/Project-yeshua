@@ -149,6 +149,7 @@ public class MeiController {
                 .acao(acao)
                 .entidade("Mei")
                 .entidadeId(mei.getId())
+                .alteradoEm(mei.getApelido())
                 .campoAlterado(acao)
                 .valorAntigo(valorAntigo != null ? valorAntigo.toString() : null)
                 .valorNovo(string != null ? string.toString() : null)
@@ -168,6 +169,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("razaoSocial")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getRazaoSocial())
                     .valorNovo(atualizada.getRazaoSocial())
                     .build());
@@ -181,6 +183,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("cnpj")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getCnpj())
                     .valorNovo(atualizada.getCnpj())
                     .build());
@@ -195,6 +198,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("cdEmpresa")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getCdEmpresa() != null ? existente.getCdEmpresa().toString() : null)
                     .valorNovo(atualizada.getCdEmpresa() != null ? atualizada.getCdEmpresa().toString() : null)
                     .build());
@@ -208,6 +212,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("apelido")
+                    .alteradoEm(atualizada.getApelido())
                     .valorAntigo(existente.getApelido())
                     .valorNovo(atualizada.getApelido())
                     .build());
@@ -221,6 +226,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("status")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getStatus())
                     .valorNovo(atualizada.getStatus())
                     .build());
@@ -234,6 +240,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("cidade")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getCidade())
                     .valorNovo(atualizada.getCidade())
                     .build());
@@ -248,6 +255,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("cdAcessoSN")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getCdAcessoSN() != null ? existente.getCdAcessoSN() : null)
                     .valorNovo(atualizada.getCdAcessoSN() != null ? atualizada.getCdAcessoSN() : null)
                     .build());
@@ -263,6 +271,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("simplesNacional")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getSimplesNacional() != null ? existente.getSimplesNacional() : null)
                     .valorNovo(atualizada.getSimplesNacional() != null ? atualizada.getSimplesNacional() : null)
                     .build());
@@ -276,6 +285,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("declaracoes")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getDeclaracoes())
                     .valorNovo(atualizada.getDeclaracoes())
                     .build());
@@ -290,6 +300,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("postoFiscal")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getPostoFiscal() != null ? existente.getPostoFiscal() : null)
                     .valorNovo(atualizada.getPostoFiscal() != null ? atualizada.getPostoFiscal() : null)
                     .build());
@@ -305,6 +316,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("senhaPostoFiscal")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getSenhaPostoFiscal() != null ? existente.getSenhaPostoFiscal() : null)
                     .valorNovo(atualizada.getSenhaPostoFiscal() != null ? atualizada.getSenhaPostoFiscal() : null)
                     .build());
@@ -318,6 +330,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("ie")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getIe() != null ? existente.getIe() : null)
                     .valorNovo(atualizada.getIe() != null ? atualizada.getIe() : null)
                     .build());
@@ -331,6 +344,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("procuracao")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getProcuracao())
                     .valorNovo(atualizada.getProcuracao())
                     .build());
@@ -344,6 +358,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("contabilista")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getContabilista())
                     .valorNovo(atualizada.getContabilista())
                     .build());
@@ -358,6 +373,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("ccm")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getCcm() != null ? existente.getCcm() : null)
                     .valorNovo(atualizada.getCcm() != null ? atualizada.getCcm() : null)
                     .build());
@@ -372,6 +388,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("senhaGiss")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getSenhaGiss() != null ? existente.getSenhaGiss() : null)
                     .valorNovo(atualizada.getSenhaGiss() != null ? atualizada.getSenhaGiss() : null)
                     .build());
@@ -386,6 +403,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("userNFE")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getUserNFE() != null ? existente.getUserNFE() : null)
                     .valorNovo(atualizada.getUserNFE() != null ? atualizada.getUserNFE() : null)
                     .build());
@@ -400,6 +418,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("senhaNFE")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getSenhaNFE() != null ? existente.getSenhaNFE() : null)
                     .valorNovo(atualizada.getSenhaNFE() != null ? atualizada.getSenhaNFE() : null)
                     .build());
@@ -413,6 +432,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("licenciamento")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getLicenciamento())
                     .valorNovo(atualizada.getLicenciamento())
                     .build());
@@ -427,6 +447,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("govBr")
+                    .alteradoEm(existente.getApelido())
                     .valorAntigo(existente.getGovBr() != null ? existente.getGovBr() : null)
                     .valorNovo(atualizada.getGovBr() != null ? atualizada.getGovBr() : null)
                     .build());
@@ -440,6 +461,7 @@ public class MeiController {
                     .entidade("Mei")
                     .entidadeId(existente.getId())
                     .campoAlterado("representante")
+                    .alteradoEm(existente.getApelido()) 
                     .valorAntigo(existente.getRepresentante().getNome())
                     .valorNovo(atualizada.getRepresentante().getNome())
                     .build());

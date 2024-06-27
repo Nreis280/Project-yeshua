@@ -138,6 +138,7 @@ public class RepresentanteController {
                 .entidade("Representante")
                 .entidadeId(representante.getId())
                 .campoAlterado(acao)
+                .alteradoEm(representante.getNome())
                 .valorAntigo(valorAntigo != null ? valorAntigo.toString() : null)
                 .valorNovo(string != null ? string.toString() : null)
                 .build();
@@ -156,6 +157,7 @@ public class RepresentanteController {
                 .entidade("Representante")
                 .entidadeId(existente.getId())
                 .campoAlterado("nome")
+                .alteradoEm(atualizada.getNome())
                 .valorAntigo(existente.getNome())
                 .valorNovo(atualizada.getNome())
                 .build());
@@ -169,6 +171,7 @@ public class RepresentanteController {
                 .entidade("Representante")
                 .entidadeId(existente.getId())
                 .campoAlterado("cpf")
+                .alteradoEm(existente.getNome())
                 .valorAntigo(existente.getCpf())
                 .valorNovo(atualizada.getCpf())
                 .build());
@@ -182,6 +185,7 @@ public class RepresentanteController {
                 .entidade("Representante")
                 .entidadeId(existente.getId())
                 .campoAlterado("email")
+                .alteradoEm(existente.getNome())
                 .valorAntigo(existente.getEmail())
                 .valorNovo(atualizada.getEmail())
                 .build());
@@ -195,6 +199,7 @@ public class RepresentanteController {
                 .entidade("Representante")
                 .entidadeId(existente.getId())
                 .campoAlterado("telefone")
+                .alteradoEm(existente.getNome())
                 .valorAntigo(existente.getTelefone())
                 .valorNovo(atualizada.getTelefone())
                 .build());

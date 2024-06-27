@@ -1,7 +1,5 @@
 package br.com.yeshua.projeto.repositoriy;
 
-import java.math.BigDecimal;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +12,6 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
 
     Page<Empresa> findByRepresentanteNomeIgnoreCase(String representante, Pageable pageable);
 
-    //JPQL - Java Persistence Query Language
     @Query("SELECT e FROM Empresa e WHERE(e.status) = :status")
     Page<Empresa> findByStatus(@Param("status") String status, Pageable pageable);
 
